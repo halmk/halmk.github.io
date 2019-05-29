@@ -120,3 +120,148 @@ body {
 .mastfoot {
   color: rgba(255, 255, 255, .5);
 }
+
+@import url('https://fonts.googleapis.com/css?family=Exo:400,700');
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    font-family: 'Exo', sans-serif;
+}
+
+
+.context {
+    width: 100%;
+    position: absolute;
+    top:50vh;
+    
+}
+
+.context h1{
+    text-align: center;
+    color: #fff;
+    font-size: 50px;
+}
+
+
+.area{
+    background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);  
+    width: 100%;
+    height:100vh;
+    
+   
+}
+
+.circles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.circles li{
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 142px;
+    height: 86px;
+    background-image: url("../img/ac2.png");
+    background-repeat: no-repeat;
+    animation: animate 25s linear infinite;
+    bottom: -200px;
+    transform-origin: 13% 13%;
+}
+
+.circles li:nth-child(1){
+    left: 100%;
+    background-size: 25%;
+    animation-delay: 4s;
+    animation-duration: 10s;
+}
+
+
+.circles li:nth-child(2){
+    left: 90%;
+    background-size: 25%;
+    animation-delay: 1s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(3){
+    left: 80%;
+    background-size: 25%;
+    animation-delay: 8s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(4){
+    left: 70%;
+    background-size: 25%;
+    animation-delay: 2s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(5){
+    left: 60%;
+    background-size: 25%;
+    animation-delay: 5s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(6){
+    left: 50%;
+    background-size: 25%;
+    animation-delay: 9s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(7){
+    left: 40%;
+    background-size: 25%;
+    animation-delay: 3s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(8){
+    left: 30%;
+    background-size: 25%;
+    animation-delay: 6s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(9){
+    left: 20%;
+    background-size: 25%;
+    animation-delay: 7s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(10){
+    left: 10%;
+    background-size: 25%;
+    animation-delay: 0s;
+    animation-duration: 10s;
+}
+
+
+
+@keyframes animate {
+
+    0%{
+        transform: translateY(-100px) rotateZ(0deg);
+        opacity: 0;
+        border-radius: 0;
+    }
+
+    100%{
+        transform: translateY(-1000px) rotateZ(3600deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+
+}
