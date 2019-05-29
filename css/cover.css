@@ -32,7 +32,6 @@ a:hover {
   text-shadow: 0 .05rem .1rem rgba(0,0,0,.5); /* Prevent inheritance from `body` */
   background-color: #777;
   border: .05rem solid #777;
-
 }
 
 
