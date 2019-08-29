@@ -70,9 +70,9 @@ var app = new Vue({
     },
     updateProblems: function() {
       let url = "https://codeforces.com/api/problemset.problems";
+      for(let i=0; i<=4000; i+=100) this.problems[i] = 0;
       axios.get(url).then(function(data) {
         console.log("axios.get: updateProblems");
-        console.log(data);
         let json = data.data.result.problems;
         for(let i=0; i<json.length; i++){
           problem = json[i];
@@ -80,17 +80,33 @@ var app = new Vue({
           if(!app.problems[problem.rating]) app.problems[problem.rating] = 0;
           app.problems[problem.rating]++;
         }
+        console.log("done.");
       }).catch(error => console.log(error))
           .finally(() => cfStorage.save(app.problems))
+    },
+    getTotalProblems: function() {
+      this.problems = cfStorage.fetch();
+      var sum=0;
+      for(let el in this.problems){
+        if(this.problems.hasOwnProperty(el)){
+          //console.log(el +" "+ this.problems[el]);
+          sum += parseInt(this.problems[el]);
+        }
+      }
+      console.log(sum);
+      return sum;
     }
   },
-  mounted() {
+  created() {
     this.updateSubmissions();
-    if($.cookie("access") === undefined){
-      this.updateProblems();
-    }
     this.problems = cfStorage.fetch();
     this.solved = solvedStorage.fetch();
+  },
+  mounted() {
+    if(!this.getTotalProblems()) {
+      this.updateProblems();
+      this.solved = solvedStorage.fetch();
+    }
   },
 });
 
