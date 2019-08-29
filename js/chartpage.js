@@ -39,9 +39,16 @@ var app = new Vue({
     solved: {},
   },
   computed: {
-
   },
   methods: {
+    updateChart: function() {
+      df15ch.data.datasets[0].data = [this.problems[1500]-this.solved[1500],this.solved[1500]];
+      df16ch.data.datasets[0].data = [this.problems[1600]-this.solved[1600],this.solved[1600]];
+      df17ch.data.datasets[0].data = [this.problems[1700]-this.solved[1700],this.solved[1700]];
+      df15ch.update();
+      df16ch.update();
+      df17ch.update();
+    },
     updateSubmissions: function() {
       let url = "https://codeforces.com/api/user.status?handle=springroll";
       //console.log(url);
@@ -64,8 +71,9 @@ var app = new Vue({
 					});
           app.solved[i] = app.subs[i].length;
 				}
+        app.updateChart();
         console.log("done.");
-      }).catch(error => alert("Failed."))
+      }).catch(error => console.log(error))
           .finally(() => solvedStorage.save(app.subs));
     },
     updateProblems: function() {
@@ -80,6 +88,7 @@ var app = new Vue({
           if(!app.problems[problem.rating]) app.problems[problem.rating] = 0;
           app.problems[problem.rating]++;
         }
+        app.updateChart();
         console.log("done.");
       }).catch(error => console.log(error))
           .finally(() => cfStorage.save(app.problems))
@@ -95,7 +104,7 @@ var app = new Vue({
       }
       console.log(sum);
       return sum;
-    }
+    },
   },
   created() {
     this.updateSubmissions();
