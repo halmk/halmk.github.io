@@ -86,6 +86,9 @@ var app = new Vue({
   },
   mounted() {
     this.updateSubmissions();
+    if($.cookie("access") === undefined){
+      this.updateProblems();
+    }
     this.problems = cfStorage.fetch();
     this.solved = solvedStorage.fetch();
   },
