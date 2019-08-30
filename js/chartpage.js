@@ -1,5 +1,6 @@
 // https://jp.vuejs.org/v2/examples/todomvc.html
 var STORAGE_KEY = 'chart-data';
+/* 難易度ごとの問題数を格納するローカルストレージのメソッド */
 var cfStorage = {
   fetch: function() {
     var problems = {};
@@ -15,6 +16,7 @@ var cfStorage = {
   }
 };
 
+/* 難易度ごとのSolved数を格納するローカルストレージのメソッド */
 var solvedStorage = {
   fetch: function() {
     var solved = {};
@@ -34,13 +36,14 @@ var solvedStorage = {
 var app = new Vue({
   el: '#app',
   data: {
-    subs: {},
-    problems: {},
-    solved: {},
+    subs: {},     // 各難易度に属する問題の問題名
+    problems: {}, // 各難易度の問題数
+    solved: {},   // 各難易度のSolved数
   },
   computed: {
   },
   methods: {
+    /* 円グラフのデータを更新する */
     updateChart: function() {
       df15ch.data.datasets[0].data = [this.problems[1500]-this.solved[1500],this.solved[1500]];
       df16ch.data.datasets[0].data = [this.problems[1600]-this.solved[1600],this.solved[1600]];
@@ -49,6 +52,7 @@ var app = new Vue({
       df16ch.update();
       df17ch.update();
     },
+    /* CFのAPIから提出データを取得し、solvedに格納 */
     updateSubmissions: function() {
       let url = "https://codeforces.com/api/user.status?handle=springroll";
       //console.log(url);
@@ -76,6 +80,7 @@ var app = new Vue({
       }).catch(error => console.log(error))
           .finally(() => solvedStorage.save(app.subs));
     },
+    /* CFのAPIから問題セットデータを取得し、problemsに格納 */
     updateProblems: function() {
       let url = "https://codeforces.com/api/problemset.problems";
       for(let i=0; i<=4000; i+=100) this.problems[i] = 0;
@@ -93,6 +98,7 @@ var app = new Vue({
       }).catch(error => console.log(error))
           .finally(() => cfStorage.save(app.problems))
     },
+    /* ローカルストレージに保存されている問題セットをカウントする */
     getTotalProblems: function() {
       this.problems = cfStorage.fetch();
       var sum=0;
