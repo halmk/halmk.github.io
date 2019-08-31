@@ -233,16 +233,16 @@ var ctxDB = document.getElementById('dfBar');
 var dfBarChart = new Chart(ctxDB, {
   type: 'bar',
   data: {
-    labels: [],
+    labels: app.difficulty(),
     datasets: [
       {
         label: 'Solved',
-        data: [],
+        data: app.rangedSolved(),
         backgroundColor: '#00ce00',
       },
       {
         label: 'Unsolved',
-        data: [],
+        data: app.rangedDiff(),
         backgroundColor: '#666',
       }
     ]
