@@ -41,16 +41,42 @@ var app = new Vue({
     solved: {},   // 各難易度のSolved数
   },
   computed: {
+
   },
   methods: {
+    difficulty: function() {
+      diff = [];
+      for(let i=400; i<=3800; i+=100){
+        diff.push(i.toString());
+      }
+      return diff;
+    },
+    rangedSolved: function () {
+      rs = [];
+      for(let i=400; i<=3800; i+=100){
+        rs.push(this.solved[i]);
+      }
+      return rs;
+    },
+    rangedDiff: function() {
+      rp = [];
+      for(let i=400; i<=3800; i+=100){
+        rp.push(this.problems[i]-this.solved[i]);
+      }
+      return rp;
+    },
     /* 円グラフのデータを更新する */
     updateChart: function() {
       df15ch.data.datasets[0].data = [this.problems[1500]-this.solved[1500],this.solved[1500]];
       df16ch.data.datasets[0].data = [this.problems[1600]-this.solved[1600],this.solved[1600]];
       df17ch.data.datasets[0].data = [this.problems[1700]-this.solved[1700],this.solved[1700]];
+      dfBarChart.data.labels = this.difficulty();
+      dfBarChart.data.datasets[0].data = this.rangedSolved();
+      dfBarChart.data.datasets[1].data = this.rangedDiff();
       df15ch.update();
       df16ch.update();
       df17ch.update();
+      dfBarChart.update();
     },
     /* CFのAPIから提出データを取得し、solvedに格納 */
     updateSubmissions: function() {
@@ -199,6 +225,79 @@ var df17ch = new Chart(ctx17, {
     rotation: 0,
     animation: {
       animateScale: true
+    },
+  }
+});
+
+var ctxDB = document.getElementById('dfBar');
+var dfBarChart = new Chart(ctxDB, {
+  type: 'bar',
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: 'Solved',
+        data: [],
+        backgroundColor: '#00ce00',
+      },
+      {
+        label: 'Unsolved',
+        data: [],
+        backgroundColor: '#666',
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Solved by difficulty',
+      fontSize: 34,
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMax: 300,
+          suggestedMin: 0,
+          stepSize: 50,
+        },
+        stacked: true,
+      }]
+    }
+  }
+});
+
+var ctxME = document.getElementById('monthlyEffort');
+var monthlyEffortChart = new Chart(ctxME, {
+  type: 'line',
+  data: {
+    labels: ['4月','5月','6月','7月','8月'],
+    datasets: [{
+      label: 'Solved',
+      data: [93,68,102,75,57],
+      borderColor: "rgba(31,89,212,0.7)",
+      backgroundColor: "rgba(31,89,212,0.3)",
+      fill: 'start',
+      lineTension: 0,
+      pointHitRadius: 50,
+    }],
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Monthly Effort',
+      fontSize: 34,
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          suggestedMax: 200,
+          suggestedMin: 0,
+          stepSize: 50,
+        }
+      }]
     },
   }
 });
