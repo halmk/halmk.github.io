@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p|Notable|Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.10.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Springroll</title>
+    <style>
+		body {
+			font-family: 'Poppins', sans-serif;
+		}
+    </style>
+</head>
+<body>
+<!-- NAVIGATION BAR -->
+<nav class="navbar navbar-expand-md navbar-dark bg-info shadow">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Springroll</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar-content">
+            <ul class="navbar-nav mr-auto d-inline">
+                <li class="navbar-item d-inline">
+                    <a href="https://github.com/halmk"><i class="fab fa-github-square" style="color:white; font-size: 2.0em"></i></a>
+                </li>
+                <li class="navbar-item d-inline">
+                    <a href="https://twitter.com/hrmk_code"><i class="fab fa-twitter-square ml-2" style="color:white; font-size: 2.0em"></i></a>
+                </li>
+                <li class="navbar-item d-inline">
+                    <a href="chart.html"><i class="fas fa-chart-bar ml-2" style="color:white; font-size: 2.0em"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- /NAVIGATION BAR -->
+
+<main>
+    <div class="py-4">
+        <section id="main">
+            <div class="container main">
+                <div class="row">
+                    <div class="col shadow section p-3">
+                        <h1 class="font-weight-bold">
+                            ClipHype
+                        </h1>
+                        <p class="mt-3">
+                            <span class="font-weight-bold">ClipHype とは</span><br>
+                            Twitch.tvの配信中に作られるクリップを利用したWebサービスです。特徴は、ユーザがフォローしている配信者のクリップの閲覧が容易であることや、配信者のクリップをまとめて１つのハイライト動画として作成できることです。近年、配信の切り抜き動画が主にYoutubeで流行っており、その動画の作成をクリップを選択するだけでできるという利点があります。
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">ClipHypeの機能</span>
+                            <ul>
+                                <li>
+                                    Twitch APIを利用したクリップの閲覧、ダウンロード
+                                </li>
+                                <li>
+                                    クリップを用いたクリップ集（ハイライト動画）の作成
+                                </li>
+                            </ul>
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">システムの構成</span><br>
+                            １つ目の機能は、ひたすらTwitch APIを叩いて表示させているだけなので、ここでは、２つ目のハイライト動画の作成におけるシステムの構成について触れます。構成図は下のようになります。バックエンドは主にAWSを利用しました。<br>
+                            <img class="img-fluid d-block mx-auto my-3 shadow" src="img/cliphype-system.png">
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">バックエンド</span><br>
+                            WebアプリフレームワークとしてDjangoを使用しています。
+                            Webサイト自体は、AWSのEC2のオンデマンドインスタンスを利用しており、Nginxを用いてデプロイしています。ここでのタスクは、複数の動画を１つの動画に変換し保存するというものです。変換の作業は負荷が大きく、数時間かかるものもあるため、別のインスタンスにて処理を行います。低価格で抑えるために、LambdaからSpot Instanceを立ち上げるようにしました。<br>
+                            図の手順をまとめると以下のようになります。
+                            <ol>
+                                <li>
+                                    ユーザによって作成する動画がリクエストされる
+                                </li>
+                                <li>
+                                    作成する動画に使われるクリップをS3にアップロードする
+                                </li>
+                                <li>
+                                    S3にアップロードされた動画を既定のサイズにリサイズする
+                                </li>
+                                <li>
+                                    全ての動画がリサイズされたらSQSにメッセージを送る
+                                </li>
+                                <li>
+                                    SQSからLambdaが呼び出され、スポットインスタンスを立ち上げる
+                                </li>
+                                <li>
+                                    動画の変換処理を行い、S3にアップロード
+                                </li>
+                            </ol>
+                            LambdaはAWS側でコードを実行してくれるサービスで、ある程度小さな処理を低価格で実行してくれるので多用しています。SQSはメッセージキューのサービスで、スポットインスタンスの立ち上げの失敗を考慮して使用しています。失敗したタスクは再びSQSに送られます。<br>
+                            スポットインスタンスでNode.jsを使っているのは、動画をかっこ良く繋げるOSSがNode.jsで使えるからで、そのままNode.jsで簡単にサーバを立ち上げています。
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">フロントエンド</span><br>
+                            こちらは、フレームワークとしてVue.jsとBootstrapを使用しています。
+                            クリップはフロントエンドでAPIを叩くことで取得しています。取得したクリップは、サムネイル付きでページネーションを利用して表示されるようになっています。また、選択したクリップの順序の変更、削除などの編集機能もサポートしています。
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">おわりに</span><br>
+                            バックエンドは、AWSの機能使ってトリガーでLambda呼び出したり、Lambdaからスポットインスタンス起動させたりするのがシステムを構築してる感あって楽しかったし、意外と低価格で抑えられたのが満足感高かった。<br>
+                            フロントエンドはVue.jsが使いやすくて良かった。よりモダンなサイトも作ってみたいので、Nuxt.jsやReactも勉強してみたい。<br>
+                            他にも、付け加えたい機能がたくさんあるし、安定してきたら他の人に使ってもらいたい！と思ってます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
