@@ -1,0 +1,6 @@
+[book]
+authors = ["halmk"]
+language = "ja"
+multilingual = false
+src = "src"
+title = "Springroll Book"
