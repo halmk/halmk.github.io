@@ -210,7 +210,40 @@
 <li><a href="other/toeic.html">TOEIC</a></li>
 </ul>
 <h1><a class="header" href="#basic-command" id="basic-command">Basic Command</a></h1>
-<h1><a class="header" href="#devflow-with-issuespullrequest" id="devflow-with-issuespullrequest">DevFlow with Issues&amp;PullRequest</a></h1>
+<h1><a class="header" href="#issuesとpullrequestによる開発フロー" id="issuesとpullrequestによる開発フロー">IssuesとPullRequestによる開発フロー</a></h1>
+<h2><a class="header" href="#大まかな手順" id="大まかな手順">大まかな手順</a></h2>
+<ol>
+<li>Issuesで問題を設定する</li>
+<li>そのIssueに対応したBranchをローカルで作成する</li>
+<li>そのBranchで開発を進める</li>
+<li>作業が終わったらPushする</li>
+<li>PullRequestを送る</li>
+</ol>
+<h2><a class="header" href="#詳細" id="詳細">詳細</a></h2>
+<h3><a class="header" href="#issuesで問題を設定する" id="issuesで問題を設定する">Issuesで問題を設定する</a></h3>
+<h3><a class="header" href="#そのissueに対応したbranchをローカルで作成する" id="そのissueに対応したbranchをローカルで作成する">そのIssueに対応したBranchをローカルで作成する</a></h3>
+<p>ローカルで作業内容とissueの番号からなるBranchを作成する</p>
+<pre><code>$ git checkout -b &lt;作業内容&gt;#&lt;issueの番号&gt;
+</code></pre>
+<p>リモートにそのBranchをPushしておくことで、作業開始が周りに分かる</p>
+<pre><code>$ git push origin &lt;作業内容&gt;#&lt;issueの番号&gt;
+</code></pre>
+<h3><a class="header" href="#そのbranchで開発を進める" id="そのbranchで開発を進める">そのBranchで開発を進める</a></h3>
+<p>なるべくこまかく変更を<code>commit</code>することでコードレビューがしやすくなる
+コミットメッセージはテンプレートを決めておくと良い</p>
+<ul>
+<li>作業内容の対応するissue番号</li>
+<li>作業の方向性を表すAdd Update Move Remove Change Rename等の動詞</li>
+<li>作業内容の説明(外部に公開する場合は英語)</li>
+</ul>
+<pre><code>#&lt;issue番号&gt; &lt;Add/Updateなど&gt; &lt;作業内容の説明&gt;
+</code></pre>
+<h3><a class="header" href="#作業が終わったらpushする" id="作業が終わったらpushする">作業が終わったらPushする</a></h3>
+<p>ローカルの変更をPushする
+Branchの派生元のBranchを最新にしてからPushする</p>
+<p>作業が完了してからPushしてもいいけど作業途中でPushすることで途中経過を見せることができる</p>
+<h3><a class="header" href="#pullrequestを送る" id="pullrequestを送る">PullRequestを送る</a></h3>
+<p>GithubからPullRequestを送る</p>
 <h1><a class="header" href="#rust" id="rust">Rust</a></h1>
 <h1><a class="header" href="#yabai" id="yabai">yabai</a></h1>
 <h1><a class="header" href="#lazygit" id="lazygit">lazygit</a></h1>
