@@ -191,7 +191,30 @@
 <h1><a class="header" href="#app-features" id="app-features">App features</a></h1>
 <h1><a class="header" href="#follow-page" id="follow-page">Follow Page</a></h1>
 <h1><a class="header" href="#studio-page" id="studio-page">Studio Page</a></h1>
-<h1><a class="header" href="#twitchapi" id="twitchapi">TwitchAPI</a></h1>
+<h1><a class="header" href="#twitch-api" id="twitch-api">Twitch API</a></h1>
+<p>ClipHypeで使用しているAPIの詳細や認可フロー、ユーザ認証方法についてまとめる</p>
+<h2><a class="header" href="#レート制限" id="レート制限">レート制限</a></h2>
+<ul>
+<li>リクエストのレート制限はユーザごとに主にリクエスト数で決められる</li>
+<li>毎分800ずつポイントが再分配される</li>
+<li>一部のAPIは消費ポイントが異なる</li>
+<li>ポイントがなくなった場合は<code>429(Too Many Requests)</code>レスポンスが返ってくる</li>
+</ul>
+<h2><a class="header" href="#oauth-client-credentials-flow" id="oauth-client-credentials-flow">OAuth client credentials flow</a></h2>
+<ul>
+<li>サーバ側でユーザ情報なしにAPIを叩く方法</li>
+<li>あるユーザの許可が必要になるようなAPIは使用できない</li>
+<li>server-to-serverでのみ使用すべきでユーザ側では使ってはいけない</li>
+<li>使用できるトークンは<code>app access token</code></li>
+</ul>
+<h3><a class="header" href="#app-access-tokenを取得するリクエスト" id="app-access-tokenを取得するリクエスト"><code>app access token</code>を取得するリクエスト</a></h3>
+<pre><code>POST https://id.twitch.tv/oauth2/token
+    ?client_id=&lt;your client ID&gt;
+    &amp;client_secret=&lt;your client secret&gt;
+    &amp;grant_type=client_credentials
+    &amp;scope=&lt;space-separated list of scopes&gt;
+</code></pre>
+<p>レスポンスで<code>bearer token</code>がもらえるので、有効である間そのトークンを使用してAPIを叩く</p>
 <h1><a class="header" href="#app-access-tokens" id="app-access-tokens">App Access Tokens</a></h1>
 <h1><a class="header" href="#user-authentication" id="user-authentication">User Authentication</a></h1>
 <h1><a class="header" href="#dev-blog" id="dev-blog">Dev Blog</a></h1>
