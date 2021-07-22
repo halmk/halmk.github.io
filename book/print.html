@@ -187,6 +187,25 @@
 <li>配信者に使ってもらう</li>
 <li>リポジトリをパブリックにする</li>
 </ul>
+<h2><a class="header" href="#ローカルでの開発環境構築手順" id="ローカルでの開発環境構築手順">ローカルでの開発環境構築手順</a></h2>
+<p>本番環境と近づけるためにDockerを使う。</p>
+<ol>
+<li>Dockerイメージのビルド</li>
+</ol>
+<p>Dockerfileの場所を指定して、そのDockerfileをもとにイメージをビルドする</p>
+<pre><code>$ docker build -t cliphype:1.0 .
+</code></pre>
+<ol start="2">
+<li>Dockerコンテナ起動</li>
+</ol>
+<pre><code>docker run -it -p 8000:8000 -v &lt;directory_path&gt;:/root/cliphype --name cliphype cliphype:1.0
+</code></pre>
+<p>ここで、コンテナ起動時に自動的に<code>docker_start.sh</code>が実行され、諸々設定される</p>
+<ol start="3">
+<li>開発サーバの起動</li>
+</ol>
+<pre><code>$ python3 manage.py runserver 0.0.0.0:8000
+</code></pre>
 <h1><a class="header" href="#dev-environment" id="dev-environment">Dev Environment</a></h1>
 <h1><a class="header" href="#app-features" id="app-features">App features</a></h1>
 <h1><a class="header" href="#follow-page" id="follow-page">Follow Page</a></h1>
