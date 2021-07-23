@@ -132,7 +132,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#reset" id="reset">Reset</a></h1>
+                        <h1><a class="header" href="#色々取り消したいとき" id="色々取り消したいとき">色々取り消したいとき</a></h1>
+<h2><a class="header" href="#ローカルリポジトリ" id="ローカルリポジトリ">ローカルリポジトリ</a></h2>
+<h3><a class="header" href="#間違ったcommitをしてしまったとき" id="間違ったcommitをしてしまったとき">間違った<code>Commit</code>をしてしまったとき</a></h3>
+<ul>
+<li><code>git reset --soft &lt;コミットID&gt;</code></li>
+</ul>
+<p>コミットメッセージを直したい、コミットし直したいときに使用する<br />
+ステージングしたファイルはステージングされたまま</p>
+<ul>
+<li><code>git reset --mixed &lt;コミットID&gt;</code></li>
+</ul>
+<p>コミットをまとめてやりすぎたときとかに使用する<br />
+コミットの取り消し+ステージングされたファイルも取り消される(addする前になる)</p>
+<ul>
+<li><code>git reset --hard &lt;コミットID&gt;</code></li>
+</ul>
+<p>間違えて違うブランチで作業してたときとかに使用する<br />
+変更したファイルそのものが取り消される</p>
+<h2><a class="header" href="#リモートリポジトリ" id="リモートリポジトリ">リモートリポジトリ</a></h2>
+<h3><a class="header" href="#間違ったコミットをpushしてしまったとき" id="間違ったコミットをpushしてしまったとき">間違ったコミットを<code>Push</code>してしまったとき</a></h3>
+<ul>
+<li><code>git revert &lt;コミットID&gt;</code></li>
+</ul>
+<p><code>git reset</code>を使ってしまうと色々<a href="https://qiita.com/YuukiWatanabe/items/d326aad1224f2a559843">厄介なこと</a>になる<br />
+<code>revert</code>すると、コミットの履歴は残り<code>revert</code>したというコミットが作られる（仕方ない）</p>
 
                     </main>
 
