@@ -295,12 +295,14 @@ Branchの派生元のBranchを最新にしてからPushする</p>
 <ul>
 <li><code>git reset --soft &lt;コミットID&gt;</code></li>
 </ul>
-<p>コミットメッセージを直したい、コミットし直したいときに使用する<br />
+<p>該当のコミットに移動し、ステージング
+コミットメッセージを直したい、コミットし直したいときに使用する<br />
 ステージングしたファイルはステージングされたまま</p>
 <ul>
 <li><code>git reset --mixed &lt;コミットID&gt;</code></li>
 </ul>
-<p>コミットをまとめてやりすぎたときとかに使用する<br />
+<p>該当のコミットに移動し、
+コミットをまとめてやりすぎたときとかに使用する<br />
 コミットの取り消し+ステージングされたファイルも取り消される(addする前になる)</p>
 <ul>
 <li><code>git reset --hard &lt;コミットID&gt;</code></li>
@@ -312,7 +314,8 @@ Branchの派生元のBranchを最新にしてからPushする</p>
 <ul>
 <li><code>git revert &lt;コミットID&gt;</code></li>
 </ul>
-<p><code>git reset</code>を使ってしまうと色々<a href="https://qiita.com/YuukiWatanabe/items/d326aad1224f2a559843">厄介なこと</a>になる<br />
+<p>該当のコミットの変更を取り消ししたコミットができる
+<code>git reset</code>を使ってしまうと色々<a href="https://qiita.com/YuukiWatanabe/items/d326aad1224f2a559843">厄介なこと</a>になる<br />
 <code>revert</code>すると、コミットの履歴は残り<code>revert</code>したというコミットが作られる（仕方ない）</p>
 <h1><a class="header" href="#rust" id="rust">Rust</a></h1>
 <h1><a class="header" href="#yabai" id="yabai">yabai</a></h1>
