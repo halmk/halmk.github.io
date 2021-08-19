@@ -207,6 +207,93 @@
 </ol>
 <pre><code>$ python3 manage.py runserver 0.0.0.0:8000
 </code></pre>
+<h2><a class="header" href="#concat-clips-インスタンスの構築" id="concat-clips-インスタンスの構築">Concat-clips インスタンスの構築</a></h2>
+<h3><a class="header" href="#必要なパッケージのインストール" id="必要なパッケージのインストール">必要なパッケージのインストール</a></h3>
+<pre><code>$ sudo apt update
+$ sudo apt install -y ffmpeg curl build-essential python3 python3-dev python python-dev libx11-dev libxext-dev libxext6 xvfb libxi-dev libglew2.1 libglew-dev pkg-config
+$ sudo apt install -y mysql-server mysql-client
+$ sudo apt install -y nodejs npm
+$ curl https://sh.rustup.rs -sSf | sh
+</code></pre>
+<h3><a class="header" href="#ffmpeg-concatのインストール" id="ffmpeg-concatのインストール">ffmpeg-concatのインストール</a></h3>
+<pre><code>$ sudo chmod 777 /usr/local/lib
+$ sudo chmod 777 /usr/local/bin
+$ npm install -g ffmpeg-concat
+</code></pre>
+<h3><a class="header" href="#concat-clipsrsのビルド" id="concat-clipsrsのビルド">concat-clips.rsのビルド</a></h3>
+<pre><code>$ git clone https://github.com/halmk/ClipHype.git
+$ cd ClipHype/aws/ec2/concat-clips
+$ cargo build --release
+$ cp target/release/concat-clips ~/
+</code></pre>
+<h3><a class="header" href="#インスタンス起動時に自動実行させるための設定" id="インスタンス起動時に自動実行させるための設定">インスタンス起動時に自動実行させるための設定</a></h3>
+<ul>
+<li>concat-clips.service</li>
+</ul>
+<pre><code>[Unit]
+Description=service to lanuch concat-clips
+
+[Service]
+EnvironmentFile=/etc/sysconfig/concat-clips_env
+WorkingDirectory=/home/ubuntu/
+ExecStart=/bin/sh /home/ubuntu/concat-process.sh
+User=ubuntu
+
+[Install]
+WantedBy=default.target
+</code></pre>
+<ul>
+<li>concat-clips_env</li>
+</ul>
+<pre><code>PATH=/home/ubuntu/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+DATABASE_URL=mysql://root:*****@*****/cliphype
+AWS_ACCESS_KEY_ID=*****
+AWS_SECRET_ACCESS_KEY=*****
+</code></pre>
+<h4><a class="header" href="#サービスの設定" id="サービスの設定">サービスの設定</a></h4>
+<pre><code>$ sudo vi /etc/systemd/system/concat-clips.service
+$ sudo mkdir /etc/sysconfig
+$ sudo vi /etc/sysconfig/concat-clips_env
+$ sudo systemctl enable concat-clips
+</code></pre>
+<h2><a class="header" href="#デプロイ手順" id="デプロイ手順">デプロイ手順</a></h2>
+<h3><a class="header" href="#mainブランチにdevelopブランチをマージ" id="mainブランチにdevelopブランチをマージ">mainブランチにdevelopブランチをマージ</a></h3>
+<ul>
+<li>Githubの<code>PullRequest</code>からマージする</li>
+<li><code>main</code>←<code>develop</code></li>
+</ul>
+<h3><a class="header" href="#本番サーバでcliphypeをpull" id="本番サーバでcliphypeをpull">本番サーバでClipHypeをPull</a></h3>
+<pre><code>$ sudo systemctl stop gunicorn
+$ git pull
+$ cd cliphype
+$ python3 manage.py makemigrations
+$ python3 manage.py migrate
+</code></pre>
+<h3><a class="header" href="#awsサービスの置き換え" id="awsサービスの置き換え">AWSサービスの置き換え</a></h3>
+<h4><a class="header" href="#lambda" id="lambda">Lambda</a></h4>
+<ul>
+<li>元の関数のトリガーを削除/無効化</li>
+<li>新しい関数のトリガーを作成</li>
+<li>環境変数を本番用に変更</li>
+</ul>
+<h4><a class="header" href="#sqs" id="sqs">SQS</a></h4>
+<ul>
+<li>Lambda関数トリガーの設定</li>
+</ul>
+<h4><a class="header" href="#rds" id="rds">RDS</a></h4>
+<h3><a class="header" href="#本番サーバの起動" id="本番サーバの起動">本番サーバの起動</a></h3>
+<pre><code>$ pkill celery
+$ nohup celery -A cliphype worker --loglevel=INFO --concurrency=1 &gt;&gt; ~/celery.log &amp;
+$ sudo systemctl restart nginx
+$ sudo systemctl start gunicorn
+</code></pre>
+<h2><a class="header" href="#クリップのタイトルを描画する" id="クリップのタイトルを描画する">クリップのタイトルを描画する</a></h2>
+<h3><a class="header" href="#ffmpeg-python" id="ffmpeg-python">ffmpeg-python</a></h3>
+<ul>
+<li>pythonでffmpegのコマンドが操作できる</li>
+<li>変数が扱いやすい</li>
+<li>パイプラインで記述するので、足し引きが楽</li>
+</ul>
 <h1><a class="header" href="#dev-environment" id="dev-environment">Dev Environment</a></h1>
 <h1><a class="header" href="#app-features" id="app-features">App features</a></h1>
 <h1><a class="header" href="#follow-page" id="follow-page">Follow Page</a></h1>
