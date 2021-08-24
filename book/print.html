@@ -324,7 +324,42 @@ $ sudo systemctl start gunicorn
 <p>レスポンスで<code>bearer token</code>がもらえるので、有効である間そのトークンを使用してAPIを叩く</p>
 <h1><a class="header" href="#app-access-tokens" id="app-access-tokens">App Access Tokens</a></h1>
 <h1><a class="header" href="#user-authentication" id="user-authentication">User Authentication</a></h1>
-<h1><a class="header" href="#dev-blog" id="dev-blog">Dev Blog</a></h1>
+<h1><a class="header" href="#blog" id="blog">Blog</a></h1>
+<h2><a class="header" href="#20210819" id="20210819">2021/08/19</a></h2>
+<h3><a class="header" href="#動画内のクリップにタイトルを描画する機能を追加" id="動画内のクリップにタイトルを描画する機能を追加">動画内のクリップにタイトルを描画する機能を追加</a></h3>
+<p>クリップのタイトルを挿れることで、その動画の内容と期待するもの（笑いや驚きなど）の理解を助け、短いクリップでも状況の把握が簡単になるので結構嬉しい機能。</p>
+<p>個人的には、クリップの最初の数秒だけ表示をするよりもクリップ全体で表示を続ける方が何も考えずにまったりと見れると思ってて、タイトルの表示がなくなって数秒後に見ている動画の注目すべきポイントが何か分からなくなるような状態を避けられる。</p>
+<p>表示するテキストのエフェクトとかフォントを色々選択できればもっと嬉しいけど、ffmpegを使ってる関係でエフェクト（影、合成など）は限界がある。フォントはフォントファイルを用意すれば何でも使えるので、今後実装予定。今は、日本語が使えるようにNoto Sansを使っていて、Googleフォントからutfファイルをダウンロードして必要なサイズのものだけLamdbaで使えるようにしている。</p>
+<h3><a class="header" href="#開発用環境のコストが気になる" id="開発用環境のコストが気になる">開発用環境のコストが気になる</a></h3>
+<p>基本的に追加で料金がかかるのはRDSの開発用DBで、作業するときだけインスタンス立ち上げたいけど時間がかかるのでついつい放置しがち。このままだと月１万になっちゃう（ア</p>
+<p>その他の稼働させるサービスは追加のコストはかなり小さいけど、スポットインスタンスでc5.xlargeとか使ってると少し気になってくる。</p>
+<h3><a class="header" href="#typoraでvimキーバインド使いたい" id="typoraでvimキーバインド使いたい">TyporaでVimキーバインド使いたい</a></h3>
+<p>ファイルツリー使えるようになってて驚いた。キーバインドでVimが使えれば最高なんだけどなあ。論文書くときに使ってるOverleafはキーバインドでVimが使えて最高。ただ基本的にブログは上から下に書くし修正も少ないからあんまり必要にないっていうのはある。</p>
+<h3><a class="header" href="#ami生成がめんどう" id="ami生成がめんどう">AMI生成がめんどう</a></h3>
+<p>concat-clipsを実行するインスタンスのAMIを生成するときの手順が多い</p>
+<ul>
+<li>ec2インスタンス起動</li>
+<li>インスタンス内でconcat-clipsをビルド</li>
+<li>concat-clipsサービスの修正</li>
+<li>AMIを生成（割と時間かかる）</li>
+<li>起動したインスタンスを終了</li>
+<li>spot-request関数の環境変数を新しいAMIに変更</li>
+</ul>
+<p>ここらへんも自動化できるのかな？シェルスクリプト使えるようになればここらへんもターミナルだけでできて楽になるかも</p>
+<h3><a class="header" href="#windows10の仮想デスクトップの切り替え" id="windows10の仮想デスクトップの切り替え">Windows10の仮想デスクトップの切り替え</a></h3>
+<p>PCはMacbook pro 2015(古い)とデスクトップPCの２台持ってるけど、スペックの関係でデスクトップPC使うことが多い。Macbookは仮想デスクトップが簡単に切り替えられて(ctrl+num)快適だけど、windowsはctrl+start+right or leftで特に矢印キーがホームポジションからかなり離れてて辛い。</p>
+<p>AutoHotKeyってのを使うと入力したキーを他のキーに変換してくれるので、ショートカットキーのショートカットキーみたいになって自分の好きなキーに設定できるっぽい。</p>
+<p>設定でctrl+start+j or k で移動できるようにした。vim好きの僕にはjkが使いやすいので。</p>
+<pre><code>;Switch to right virtual desktop
+^#K::
+Send, {LControl down}#{Right}
+return
+
+;Switch to left virtual desktop
+^#J::
+Send, {LControl down}#{Left}
+return
+</code></pre>
 <h1><a class="header" href="#hoge" id="hoge">hoge</a></h1>
 <h1><a class="header" href="#other" id="other">Other</a></h1>
 <p>その他のプログラミング言語のtipsや資格試験等に関することをまとめる</p>
