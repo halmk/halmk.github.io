@@ -175,13 +175,6 @@
 <li>WebAPI</li>
 </ul>
 <h1><a class="header" href="#cliphype" id="cliphype">ClipHype</a></h1>
-<h2><a class="header" href="#目標-1" id="目標-1">目標</a></h2>
-<ul>
-<li>CI/CDを導入する</li>
-<li>一般公開</li>
-<li>配信者に使ってもらう</li>
-<li>リポジトリをパブリックにする</li>
-</ul>
 <h2><a class="header" href="#ローカルでの開発環境構築手順" id="ローカルでの開発環境構築手順">ローカルでの開発環境構築手順</a></h2>
 <p>本番環境と近づけるためにDockerを使う。</p>
 <ol>
@@ -297,49 +290,13 @@ $ sudo systemctl start gunicorn
 <p>一定期間内（たぶん24時間以内）なら長さやタイトルの編集も可能。</p>
 </li>
 <li>
-<p>自動クリップの仕組み自体は他のレポジトリとして、ClipHypeからは切り離す。</p>
+<p>自動クリップの仕組み自体は他のレポジトリとして、ClipHypeからは切り離す。 -&gt; autoclip-bot-ttv</p>
 </li>
 <li>
-<p>自動で作成されたクリップを管理するデータベースを作る</p>
+<p>自動で作成されたクリップを管理するデータベースを作る -&gt; cliphype.autoclip</p>
 </li>
 <li>
 <p>バックエンドでは、APIを作成し情報を提供する形にする</p>
-</li>
-<li>
-<p>表示方法</p>
-<ul>
-<li>
-<p><del><code>nav-tabs</code>で普通のクリップとAutoClipを切り替える</del></p>
-</li>
-<li>
-<p>AutoClippedボタンで切り替え</p>
-</li>
-<li>
-<p>配信者で絞り込む</p>
-</li>
-<li>
-<p>期間を指定して絞り込む</p>
-</li>
-<li>
-<p>時系列でソートする</p>
-</li>
-<li>
-<p>編集ページに飛ぶボタンを追加する</p>
-<ul>
-<li>編集可能期間をリアルタイム表示</li>
-<li>編集できないなら<code>disabled</code>にする</li>
-<li><code>created_epoch</code>が作成された時間なので、その時間から24時間後まで何秒あるか計算する</li>
-<li>methodに残り秒数を計算する関数を定義する</li>
-<li></li>
-</ul>
-</li>
-<li>
-<p>Hype値を表示する</p>
-</li>
-<li>
-<p>選択ボタンを追加</p>
-</li>
-</ul>
 </li>
 </ul>
 <h2><a class="header" href="#自動でハイライト動画を持続的に生成する" id="自動でハイライト動画を持続的に生成する">自動でハイライト動画を持続的に生成する</a></h2>
@@ -420,13 +377,13 @@ return
 <p>ClipHype開発に区切りをつけてCI/CDとか、リファクタリングとかやりたい。</p>
 <p>残りのやること</p>
 <ul>
-<li><input disabled="" type="checkbox"/>
+<li><input disabled="" type="checkbox" checked=""/>
 モーダル上でタイトル変更</li>
-<li><input disabled="" type="checkbox"/>
+<li><input disabled="" type="checkbox" checked=""/>
 リクエストしたハイライト動画の復元</li>
-<li><input disabled="" type="checkbox"/>
+<li><input disabled="" type="checkbox" checked=""/>
 動画ダウンロードをLambdaに移す</li>
-<li><input disabled="" type="checkbox"/>
+<li><input disabled="" type="checkbox" checked=""/>
 クリップの情報にHype値を追加する</li>
 </ul>
 <p>リファクタリング</p>
@@ -444,23 +401,6 @@ Django内でテストを書く</li>
 CircleCIでマージする前にテストを実行する</li>
 <li><input disabled="" type="checkbox"/>
 mainブランチにマージするときにはデプロイまでやりたいけど...</li>
-</ul>
-<h2><a class="header" href="#20210925" id="20210925">2021/09/25</a></h2>
-<p>いい感じになってきたので、Twitch配信者に声かけてハイライト動画作りたい</p>
-<h3><a class="header" href="#ハイライト動画" id="ハイライト動画">ハイライト動画</a></h3>
-<ul>
-<li>
-<p>国内PUBG配信者</p>
-</li>
-<li>
-<p>国内APEX配信者</p>
-</li>
-<li><input disabled="" type="checkbox"/>
-<p>Twitch配信者をTwitterでフォローする</p>
-</li>
-<li><input disabled="" type="checkbox"/>
-<p>DMで使用許可を取る</p>
-</li>
 </ul>
 <h1><a class="header" href="#aws-サービス" id="aws-サービス">AWS サービス</a></h1>
 <h2><a class="header" href="#使用経験のあるサービス" id="使用経験のあるサービス">使用経験のあるサービス</a></h2>
